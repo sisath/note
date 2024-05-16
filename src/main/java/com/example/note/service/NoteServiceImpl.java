@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -34,7 +35,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note getNoteById(Long id) {
+    public Note getNoteById(UUID id) {
         try {
             LoggerService.logInfo(NOTE_ID_PREFIX + id + " from the repository.");
             Optional<Note> noteOptional = noteRepository.findById(id);
@@ -69,7 +70,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note updateNote(Long id, Note note) {
+    public Note updateNote(UUID id, Note note) {
         try {
             LoggerService.logInfo("Updating note with ID: " + id);
             if (!noteRepository.existsById(id)) {
@@ -86,7 +87,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void deleteNoteById(Long id) {
+    public void deleteNoteById(UUID id) {
         try {
             LoggerService.logInfo("Deleting note with ID: " + id);
             noteRepository.deleteById(id);

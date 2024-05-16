@@ -1,27 +1,27 @@
 package com.example.note.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
 
-
-@Data
 @Entity
-@Builder
 @Table(name="notes")
 public class Note {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String title;
     private String content;
 
-    public Note(Long id, String title, String content) {
+    public Note(UUID id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -29,11 +29,11 @@ public class Note {
 
     public Note() {}
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

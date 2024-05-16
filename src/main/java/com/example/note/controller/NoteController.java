@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -40,7 +41,7 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
+    public ResponseEntity<Note> getNoteById(@PathVariable UUID id) {
         Note note = noteService.getNoteById(id);
         if (note != null) {
             LoggerService.logInfo("Retrieved note by ID: " + id);
@@ -52,7 +53,7 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note) {
+    public ResponseEntity<Note> updateNote(@PathVariable UUID id, @RequestBody Note note) {
         try {
             Note updatedNote = noteService.updateNote(id, note);
             LoggerService.logInfo("Note updated: " + id);
@@ -64,7 +65,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteNote(@PathVariable UUID id) {
         try {
             noteService.deleteNoteById(id);
             LoggerService.logInfo("Note deleted: " + id);
