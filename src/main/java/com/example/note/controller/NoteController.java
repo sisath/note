@@ -37,7 +37,6 @@ public class NoteController {
      *
      * @param note The note object to be created.
      * @return ResponseEntity with the created note and HTTP status CREATED.
-     * @throws Exception If an error occurs during note creation.
      */
     @PostMapping
     public ResponseEntity<Note> createNote(@RequestBody Note note) {

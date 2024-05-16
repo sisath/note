@@ -38,4 +38,3 @@ public class LoggerService {
         LOGGER.error(message, throwable);
     }
 }
-
