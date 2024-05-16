@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementation of the NoteService interface providing CRUD operations for notes.
+ */
 @Service
 public class NoteServiceImpl implements NoteService {
 
@@ -17,10 +20,43 @@ public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository noteRepository;
 
+    /**
+     * Constructs a new NoteServiceImpl with the specified NoteRepository.
+     *
+     * @param noteRepository The NoteRepository used for data access.
+     * @throws IllegalArgumentException if noteRepository is null.
+     */
     public NoteServiceImpl(NoteRepository noteRepository) {
         this.noteRepository = Assert.requireNotNull(noteRepository, "Repository cannot be null");
     }
 
+    /**
+     * Creates a new note.
+     *
+     * @param note The note object to be created.
+     * @return The created note.
+     */
+    @Override
+    public Note createNote(Note note) {
+        try {
+            LoggerService.logInfo("Creating a new note.");
+            if (note.getId() != null) {
+                throw new IllegalArgumentException("ID must be null for new note creation.");
+            }
+            Note createdNote = noteRepository.save(note);
+            LoggerService.logInfo("Created new note with ID: " + createdNote.getId());
+            return createdNote;
+        } catch (Exception e) {
+            LoggerService.logError("Error creating note", e);
+            throw e;
+        }
+    }
+
+    /**
+     * Retrieves all notes.
+     *
+     * @return List of all notes.
+     */
     @Override
     public List<Note> getAllNotes() {
         try {
@@ -34,6 +70,12 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    /**
+     * Retrieves a note by its ID.
+     *
+     * @param id The ID of the note to retrieve.
+     * @return The retrieved note, or null if not found.
+     */
     @Override
     public Note getNoteById(UUID id) {
         try {
@@ -53,22 +95,13 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
-    @Override
-    public Note createNote(Note note) {
-        try {
-            LoggerService.logInfo("Creating a new note.");
-            if (note.getId() != null) {
-                throw new IllegalArgumentException("ID must be null for new note creation.");
-            }
-            Note createdNote = noteRepository.save(note);
-            LoggerService.logInfo("Created new note with ID: " + createdNote.getId());
-            return createdNote;
-        } catch (Exception e) {
-            LoggerService.logError("Error creating note", e);
-            throw e;
-        }
-    }
-
+    /**
+     * Updates an existing note.
+     *
+     * @param id   The ID of the note to update.
+     * @param note The updated note object.
+     * @return The updated note.
+     */
     @Override
     public Note updateNote(UUID id, Note note) {
         try {
@@ -86,6 +119,11 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    /**
+     * Deletes a note by its ID.
+     *
+     * @param id The ID of the note to delete.
+     */
     @Override
     public void deleteNoteById(UUID id) {
         try {

@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Controller class for managing notes.
+ * Handles HTTP requests related to notes including creation, retrieval, updating, and deletion.
+ * Uses {@link NoteService} to perform CRUD operations on notes.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/notes")
@@ -17,10 +22,23 @@ public class NoteController {
 
     private final NoteService noteService;
 
+    /**
+     * Constructs a new NoteController with the specified NoteService.
+     *
+     * @param noteService The NoteService to be used for handling note operations.
+     * @throws IllegalArgumentException if noteService is null.
+     */
     public NoteController(NoteService noteService) {
         this.noteService = Assert.requireNotNull(noteService, "Note service cannot be null");
     }
 
+    /**
+     * Creates a new note.
+     *
+     * @param note The note object to be created.
+     * @return ResponseEntity with the created note and HTTP status CREATED.
+     * @throws Exception If an error occurs during note creation.
+     */
     @PostMapping
     public ResponseEntity<Note> createNote(@RequestBody Note note) {
         try {
@@ -33,6 +51,11 @@ public class NoteController {
         }
     }
 
+    /**
+     * Retrieves all notes.
+     *
+     * @return List of all notes.
+     */
     @GetMapping
     public List<Note> getAllNotes() {
         List<Note> notes = noteService.getAllNotes();
@@ -40,6 +63,13 @@ public class NoteController {
         return notes;
     }
 
+    /**
+     * Retrieves a note by its ID.
+     *
+     * @param id The ID of the note to retrieve.
+     * @return ResponseEntity with the retrieved note and HTTP status OK if found,
+     *         otherwise ResponseEntity with HTTP status NOT_FOUND.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNoteById(@PathVariable UUID id) {
         Note note = noteService.getNoteById(id);
@@ -52,6 +82,13 @@ public class NoteController {
         }
     }
 
+    /**
+     * Updates an existing note.
+     *
+     * @param id   The ID of the note to update.
+     * @param note The updated note object.
+     * @return ResponseEntity with the updated note and HTTP status OK.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Note> updateNote(@PathVariable UUID id, @RequestBody Note note) {
         try {
@@ -64,6 +101,12 @@ public class NoteController {
         }
     }
 
+    /**
+     * Deletes a note by its ID.
+     *
+     * @param id The ID of the note to delete.
+     * @return ResponseEntity with HTTP status NO_CONTENT.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@PathVariable UUID id) {
         try {
